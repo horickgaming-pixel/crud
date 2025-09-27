@@ -1,5 +1,5 @@
 import express from 'express'
-import {listarAlunos, criarAluno} from '../controllers/alunoController.js'
+import {listarAlunos, criarAluno, editarAluno, deletarAluno, buscarAlunoPorId} from '../controllers/alunoController.js'
 
 const alunosRouter = express.Router()
 
@@ -30,6 +30,46 @@ alunosRouter.post('/alunos', async (req,res)=>{
             titulo:'Novo aluno',
             erro: 'Erro ao criar aluno'+err.message
         })
+    }
+})
+
+
+alunosRouter.get('/alunos/:id/editar', async (req, res) => {
+    try {
+        const aluno = await buscarAlunoPorId(req, res)
+        res.render('formulario-aluno-novo', { aluno, titulo: 'Editar Aluno' })
+    }
+    catch (err) {
+        console.error(err)
+        res.status(404).send('Aluno não encontrado')
+    }
+})
+
+// Atualizar aluno
+alunosRouter.post('/alunos/:id', async (req, res) => {
+    try {
+        const resultado = await editarAluno(req, res)
+        res.redirect('/alunos?sucesso=Aluno atualizado com sucesso!')
+    }
+    catch (err) {
+        console.error(err)
+        res.status(500).render('formulario-aluno', { 
+            aluno: req.body, 
+            titulo: 'Editar Aluno',
+            erro: 'Erro ao atualizar aluno: ' + err.message 
+        })
+    }
+})
+
+// Deletar aluno
+alunosRouter.post('/alunos/:id/deletar', async (req, res) => {
+    try {
+        const resultado = await deletarAluno(req, res)
+        res.redirect('/alunos?sucesso=Aluno deletado com sucesso!')
+    }
+    catch (err) {
+        console.error(err)
+        res.status(500).redirect('/alunos?erro=Erro ao deletar aluno: ' + err.message)
     }
 })
 
