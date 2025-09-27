@@ -41,6 +41,7 @@
                             <th>Alergias</th>
                             <th>Obs. Médicas</th>
                             <th>Status</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,6 +67,8 @@
                                 <td><%= aluno.alergias %></td>
                                 <td><%= aluno.observacoes_medicas %></td>
                                 <td><%= aluno.status %></td>
+                                <td><button type="button" class="btn btn-primary">Deletar</button></th>
+                                <td><button type="button" class="btn btn-primary">Modificar</button></th>
                             </tr>
                         <% }); %>
                     </tbody>
